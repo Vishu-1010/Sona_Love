@@ -1,1 +1,236 @@
-# Sona_Love
+<!DOCTYPE html>
+<html>
+<head>
+<title>For My Sharvari ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body {
+    margin:0;
+    padding:0;
+    font-family: 'Segoe UI', sans-serif;
+    text-align:center;
+    color:white;
+    overflow-x:hidden;
+    background: linear-gradient(-45deg, #ff4e50, #ff9a9e, #fad0c4, #ff758c);
+    background-size: 400% 400%;
+    animation: gradientBG 10s ease infinite;
+}
+
+@keyframes gradientBG {
+    0% {background-position:0% 50%;}
+    50% {background-position:100% 50%;}
+    100% {background-position:0% 50%;}
+}
+
+h1 {
+    margin-top:40px;
+    font-size:3em;
+    text-shadow: 0 0 20px white;
+}
+
+.counter {
+    font-size:22px;
+    margin-top:10px;
+}
+
+.letter {
+    max-width:600px;
+    margin:auto;
+    margin-top:20px;
+    font-size:18px;
+    line-height:1.6;
+    min-height:150px;
+}
+
+button {
+    padding:15px 35px;
+    font-size:18px;
+    border:none;
+    border-radius:40px;
+    background:#fff;
+    color:#ff4e50;
+    cursor:pointer;
+    margin-top:20px;
+    transition:0.3s;
+}
+
+button:hover {
+    background:#ff4e50;
+    color:white;
+    box-shadow:0 0 20px white;
+}
+
+img {
+    width:250px;
+    border-radius:15px;
+    margin:10px;
+    animation: fadeIn 3s ease;
+}
+
+@keyframes fadeIn {
+    from {opacity:0;}
+    to {opacity:1;}
+}
+
+.heart {
+    position:fixed;
+    top:-10px;
+    font-size:20px;
+    animation: fall 5s linear infinite;
+}
+
+@keyframes fall {
+    0% {transform:translateY(-10px);}
+    100% {transform:translateY(100vh);}
+}
+
+#fireworksCanvas {
+    position:fixed;
+    top:0;
+    left:0;
+    pointer-events:none;
+    width:100%;
+    height:100%;
+}
+
+</style>
+</head>
+
+<body>
+
+<audio autoplay loop>
+<source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+</audio>
+
+<canvas id="fireworksCanvas"></canvas>
+
+<h1>Sharvari ❤️</h1>
+<h2>From Your Sweetheart 💕</h2>
+
+<div class="counter" id="loveCounter"></div>
+
+<div class="letter" id="typingText"></div>
+
+<button onclick="proposal()">Will You Be Mine Forever? 💍</button>
+
+
+<script>
+
+// LOVE COUNTER
+function updateCounter(){
+    const startDate = new Date("2018-12-16");
+    const today = new Date();
+    const diff = today - startDate;
+    const days = Math.floor(diff/(1000*60*60*24));
+    document.getElementById("loveCounter").innerHTML =
+    "Together for " + days + " magical days ❤️";
+}
+updateCounter();
+
+// TYPING EFFECT
+const message = "My dearest Sharvari... The day we first met, you became my happiness, my peace, my forever. I don’t just love you, I choose you every single day. You are my heart, my home, my everything ❤️";
+let i=0;
+function typeEffect(){
+    if(i < message.length){
+        document.getElementById("typingText").innerHTML += message.charAt(i);
+        i++;
+        setTimeout(typeEffect, 40);
+    }
+}
+typeEffect();
+
+// HEART FALL
+function createHearts(){
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML="❤️";
+    heart.style.left=Math.random()*100+"vw";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),5000);
+}
+setInterval(createHearts,300);
+
+// FIREWORKS
+const canvas=document.getElementById("fireworksCanvas");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+let fireworks=[];
+
+function Firework(x,y){
+    this.particles=[];
+    for(let i=0;i<60;i++){
+        this.particles.push({
+            x:x,
+            y:y,
+            speedX:(Math.random()-0.5)*6,
+            speedY:(Math.random()-0.5)*6,
+            life:100,
+            color:`hsl(${Math.random()*360},100%,60%)`
+        });
+    }
+}
+
+Firework.prototype.update=function(){
+    this.particles.forEach(p=>{
+        p.x+=p.speedX;
+        p.y+=p.speedY;
+        p.life--;
+    });
+};
+
+Firework.prototype.draw=function(){
+    this.particles.forEach(p=>{
+        ctx.fillStyle=p.color;
+        ctx.fillRect(p.x,p.y,3,3);
+    });
+};
+
+function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    fireworks.forEach((f,index)=>{
+        f.update();
+        f.draw();
+        if(f.particles[0].life<=0) fireworks.splice(index,1);
+    });
+    requestAnimationFrame(animate);
+}
+animate();
+
+function launchFireworks(){
+    for(let i=0;i<15;i++){
+        fireworks.push(new Firework(
+            Math.random()*canvas.width,
+            Math.random()*canvas.height/2
+        ));
+    }
+}
+
+// PROPOSAL
+function proposal(){
+    document.querySelector("button").style.display="none";
+    launchFireworks();
+
+    const finalMessage=document.createElement("div");
+    finalMessage.innerHTML=`
+    <h2 style="margin-top:30px;">You said YES! ❤️</h2>
+        <p style="font-size:20px; max-width:600px; margin:auto;">
+        Sharvari, you are my dream, my love, my forever.  
+        I promise to love you more every single day.  
+        No matter what happens, I will always stand beside you.  
+        <br><br>
+        Forever yours,  
+        <br><b>Your Sweetheart 💕</b>
+        </p>
+        <h3>Happy Valentine's Day ❤️</h3>
+
+    `;
+    document.body.appendChild(finalMessage);
+}
+
+</script>
+
+</body>
+</html>
